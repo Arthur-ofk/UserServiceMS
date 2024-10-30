@@ -9,7 +9,12 @@ using BLL.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 
-
+builder.Services.AddMemoryCache();
+builder.Services.AddStackExchangeRedisCache(
+    options => {
+        options.Configuration = builder.Configuration["Redis:ConnectionString"];
+        options.InstanceName = builder.Configuration["Redis:InstanceName"];
+    });
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddEndpointsApiExplorer();
